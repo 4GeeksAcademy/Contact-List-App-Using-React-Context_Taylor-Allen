@@ -1,43 +1,92 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { PersonAdd } from "react-bootstrap-icons";
 
 import { Context } from "../store/appContext";
 
 import "../../styles/demo.css";
 
 export const Demo = () => {
-	const { store, actions } = useContext(Context);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const { store, actions } = useContext(Context);
+  let navigate = useNavigate();
 
-	return (
-		<div className="container">
-			<ul className="list-group">
-				{store.demo.map((item, index) => {
-					return (
-						<li
-							key={index}
-							className="list-group-item d-flex justify-content-between"
-							style={{ background: item.background }}>
-							<Link to={"/single/" + index}>
-								<span>Link to: {item.title}</span>
-							</Link>
-							{// Conditional render example
-							// Check to see if the background is orange, if so, display the message
-							item.background === "orange" ? (
-								<p style={{ color: item.initial }}>
-									Check store/flux.js scroll to the actions to see the code
-								</p>
-							) : null}
-							<button className="btn btn-success" onClick={() => actions.changeColor(index, "orange")}>
-								Change Color
-							</button>
-						</li>
-					);
-				})}
-			</ul>
-			<br />
-			<Link to="/">
-				<button className="btn btn-primary">Back home</button>
-			</Link>
-		</div>
-	);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    actions.addContact(name, phone, email, address);
+    navigate("/home");
+  };
+
+  return (
+    <div className="container">
+      <div>
+        <h1 className="text-center">CONTACT FORM</h1>
+        <form>
+          <div className="mx-5 px-5">
+            <label for="fullName" className="form-label">
+              Full Name
+            </label>
+            <input
+              onChange={(e) => setName(e.target.value)}
+              type="email"
+              className="form-control"
+              id="fullName"
+              placeholder="Mary Jane"
+              aria-describedby="emailHelp"
+            />
+          </div>
+          <div className="mx-5 px-5">
+            <label for="address" className="form-label">
+              Address
+            </label>
+            <input
+              onChange={(e) => setAddress(e.target.value)}
+              type="text"
+              className="form-control"
+              id="address"
+              placeholder="420 Flower Avenue"
+            />
+          </div>
+          <div className="mx-5 px-5">
+            <label for="phoneNumber" className="form-label">
+              Phone Number
+            </label>
+            <input
+              onChange={(e) => setPhone(e.target.value)}
+              type="number"
+              className="form-control"
+              id="phoneNumber"
+              placeholder="305-555-5555"
+            />
+          </div>
+          <div className="mx-5 px-5">
+            <label for="exampleInputPassword1" className="form-label">
+              Email
+            </label>
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              type="Email"
+              className="form-control"
+              id="exampleInputEmail1"
+            />
+          </div>
+        </form>
+      </div>
+      <div className="container-button mt-3 d-flex justify-content-between">
+        <Link to="/home">
+          <button className="btn btn-secondary">Back home</button>
+        </Link>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          onClick={(e) => handleSubmit(e)}
+        >
+          <PersonAdd size={25} />
+        </button>
+      </div>
+    </div>
+  );
 };
