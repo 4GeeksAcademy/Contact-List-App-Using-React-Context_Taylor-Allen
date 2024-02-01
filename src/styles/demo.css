@@ -1,0 +1,13 @@
+.container {
+  padding: 25px;
+  background-color: lightgray;
+}
+
+.container-button {
+  margin: 25px;
+  text-align: center;
+}
+
+.btn {
+  margin-right: 10px;
+}

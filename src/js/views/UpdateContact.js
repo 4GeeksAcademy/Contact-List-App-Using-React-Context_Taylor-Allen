@@ -1,27 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 import "../../styles/demo.css";
 
-export const AddContact = () => {
+export const UpdateContact = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const { store, actions } = useContext(Context);
-  let navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     e.preventDefault();
     actions.addContact(name, phone, email, address);
-    navigate("/");
   };
 
   return (
     <div className="container">
-      <div>
-        <h1 className="text-center">Contact Form</h1>
+      <div className="text-center">
+        <h1>Contact Form</h1>
         <form>
           <div className="mx-5 px-5">
             <label for="fullName" className="form-label">
@@ -32,7 +30,7 @@ export const AddContact = () => {
               type="email"
               className="form-control"
               id="fullName"
-              placeholder="Jane Doe"
+              placeholder="John Smith"
               aria-describedby="emailHelp"
             />
           </div>
@@ -45,7 +43,7 @@ export const AddContact = () => {
               type="text"
               className="form-control"
               id="address"
-              placeholder="100 North Tryon Street"
+              placeholder="100 Brickell Avenue"
             />
           </div>
           <div className="mx-5 px-5">
@@ -57,7 +55,7 @@ export const AddContact = () => {
               type="number"
               className="form-control"
               id="phoneNumber"
-              placeholder="202-555-5555"
+              placeholder="305-555-5555"
             />
           </div>
           <div className="mx-5 px-5">
@@ -73,21 +71,17 @@ export const AddContact = () => {
           </div>
         </form>
       </div>
-      <div className="container-button d-flex justify-content-around">
-        <div>
-          <Link to="/">
-            <button className="btn btn-outline-secondary">Back home</button>
-          </Link>
-        </div>
-        <div>
-          <button
-            type="submit"
-            class="btn btn-success"
-            onClick={(e) => handleSubmit(e)}
-          >
-            Submit
-          </button>
-        </div>
+      <div className="container-button">
+        <button
+          type="submit"
+          class="btn btn-success"
+          onClick={(e) => handleSubmit(e)}
+        >
+          Submit
+        </button>
+        <Link to="/">
+          <button className="btn btn-secondary">Back home</button>
+        </Link>
       </div>
     </div>
   );
