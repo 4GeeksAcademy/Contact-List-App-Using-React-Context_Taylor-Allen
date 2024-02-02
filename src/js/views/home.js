@@ -7,14 +7,12 @@ export const Home = () => {
   const { store, actions } = useContext(Context);
 
   useEffect(() => {
-    async function getContacts() {
-      await actions.getContacts();
-    }
-    getContacts();
+    actions.getContacts();
   }, []);
 
   return (
     <div className="text-center mt-5">
+      <h1>Contact List</h1>
       {store.contacts?.map((contact, index) => (
         <ContactCard
           name={contact.full_name}

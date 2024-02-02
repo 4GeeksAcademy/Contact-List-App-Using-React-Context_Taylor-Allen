@@ -25,7 +25,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             body: JSON.stringify({
               full_name: name,
               email: email,
-              agenda_slug: "my_super_agenda",
+              agenda_slug: "taylor-allen",
               address: address,
               phone: phone,
             }),
@@ -38,7 +38,11 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       getContacts: async () => {
         let response = await fetch(
-          "https://playground.4geeks.com/apis/fake/contact/agenda/taylor-allen"
+          "https://playground.4geeks.com/apis/fake/contact/agenda/taylor-allen",
+          {
+            method: "GET",
+            headers: { "Content-type": "application/json" },
+          }
         );
         let data = await response.json();
         setStore({ contacts: data });

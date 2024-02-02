@@ -15,7 +15,7 @@ export const AddContact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     actions.addContact(name, phone, email, address);
-    navigate("/");
+    navigate("/home");
   };
 
   return (
@@ -24,12 +24,12 @@ export const AddContact = () => {
         <h1 className="text-center">Contact Form</h1>
         <form>
           <div className="mx-5 px-5">
-            <label for="fullName" className="form-label">
+            <label htmlFor="fullName" className="form-label">
               Full Name
             </label>
             <input
               onChange={(e) => setName(e.target.value)}
-              type="email"
+              type="name"
               className="form-control"
               id="fullName"
               placeholder="Jane Doe"
@@ -37,7 +37,7 @@ export const AddContact = () => {
             />
           </div>
           <div className="mx-5 px-5">
-            <label for="address" className="form-label">
+            <label htmlFor="address" className="form-label">
               Address
             </label>
             <input
@@ -49,7 +49,7 @@ export const AddContact = () => {
             />
           </div>
           <div className="mx-5 px-5">
-            <label for="phoneNumber" className="form-label">
+            <label htmlFor="phoneNumber" className="form-label">
               Phone Number
             </label>
             <input
@@ -61,12 +61,12 @@ export const AddContact = () => {
             />
           </div>
           <div className="mx-5 px-5">
-            <label for="exampleInputPassword1" className="form-label">
+            <label htmlFor="exampleInputPassword1" className="form-label">
               Email
             </label>
             <input
               onChange={(e) => setEmail(e.target.value)}
-              type="Email"
+              type="email"
               className="form-control"
               id="exampleInputEmail1"
             />
@@ -82,7 +82,7 @@ export const AddContact = () => {
         <div>
           <button
             type="submit"
-            class="btn btn-success"
+            className="btn btn-success"
             onClick={(e) => handleSubmit(e)}
           >
             Submit
