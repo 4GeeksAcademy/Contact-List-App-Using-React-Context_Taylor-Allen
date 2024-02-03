@@ -33,7 +33,6 @@ export const AddContact = () => {
               className="form-control"
               id="fullName"
               placeholder="Jane Doe"
-              aria-describedby="emailHelp"
             />
           </div>
           <div className="mx-5 px-5">

@@ -1,0 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Dosis&display=swap");
+
+.container {
+  border-radius: 20px;
+  font-family: "Dosis", sans-serif;
+  background-color: rgba(231, 223, 223, 0.285);
+  margin-top: 180px;
+}

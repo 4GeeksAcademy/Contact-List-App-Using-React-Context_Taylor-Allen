@@ -36,6 +36,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         const currentContacts = getStore().contacts;
         setStore({ contacts: [...currentContacts, data] });
       },
+
       getContacts: async () => {
         let response = await fetch(
           "https://playground.4geeks.com/apis/fake/contact/agenda/taylor-allen",
@@ -49,6 +50,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         return getStore().contacts;
       },
+
       updateContact: async (name, phone, email, address, id) => {
         let response = await fetch(
           "https://playground.4geeks.com/apis/fake/contact/" + id,
@@ -73,29 +75,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         setStore({ contacts: updatedContacts });
       },
-      deleteContact: async (id) => {
-        let response = await fetch(
-          "https://playground.4geeks.com/apis/fake/contact/" + id,
-          {
-            method: "DELETE",
-            headers: { "Content-type": "application/json" },
-          }
-        );
-        let data = await response.json();
 
-        setStore({
-          contacts: getStore().contacts.filter((contact) => contact.id !== id),
-        });
+      deleteContacts: async (id) => {
+        const url = "https://playground.4geeks.com/apis/fake/contact/" + id;
+        const options = {
+          method: "DELETE",
+        };
+
+        try {
+          const response = await fetch(url, options);
+
+          if (!response.ok) {
+            console.error("Error:", response.status, response.statusText);
+            const errorData = await response.json();
+            console.error("Error Data:", errorData);
+            return;
+          }
+
+          const data = await response.json();
+          console.log("Deleted contact:", data);
+          getActions().getContacts();
+        } catch (error) {
+          console.error("Network error:", error);
+        }
       },
-      exampleFunction: () => {
-        // Uncomment this function if needed
-        // getActions().changeColor(0, "green");
-      },
-      loadSomeData: () => {
-        // Uncomment this function if needed
-        // fetch().then().then(data => setStore({ "foo": data.bar }))
-      },
-      // changeColor function removed
     },
   };
 };

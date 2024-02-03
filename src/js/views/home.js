@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
-import ContactCard from "../component/contactCard";
+import ContactCard from "../component/contactList";
 import "../../styles/home.css";
 
 export const Home = () => {
@@ -11,8 +11,8 @@ export const Home = () => {
   }, []);
 
   return (
-    <div className="text-center mt-5">
-      <h1>Contact List</h1>
+    <div className="container text-center mt-5">
+      <div><h1 className="header">Contact List</h1>
       {store.contacts?.map((contact, index) => (
         <ContactCard
           name={contact.full_name}
@@ -20,7 +20,7 @@ export const Home = () => {
           address={contact.address}
           email={contact.email}
         />
-      ))}
+      ))}</div>
     </div>
   );
 };

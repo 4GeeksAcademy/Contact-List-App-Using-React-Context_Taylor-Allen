@@ -1,13 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Dosis&display=swap");
+
 .container {
-  padding: 25px;
-  background-color: lightgray;
+  border: solid;
+  border-color: rgb(221, 221, 221);
+  border-radius: 20px;
+  font-family: "Dosis", sans-serif;
+  background-color: rgba(231, 223, 223, 0.803);
+  margin-top: 180px;
+  width: 50%;
+  padding: 10px;
 }
 
-.container-button {
-  margin: 25px;
-  text-align: center;
-}
-
-.btn {
-  margin-right: 10px;
+button {
+  margin-top: 10px;
 }
