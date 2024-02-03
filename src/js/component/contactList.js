@@ -2,13 +2,14 @@ import React, { useContext } from "react";
 import propTypes from "prop-types";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
+import { Trash3Fill } from "react-bootstrap-icons";
 
 const ContactCard = (props) => {
   const { actions } = useContext(Context);
   const navigate = useNavigate();
 
   const deleteContact = () => {
-    actions.deleteContacts(props);
+    actions.deleteContact(props.id);
     navigate("/home");
   };
 
@@ -22,7 +23,7 @@ const ContactCard = (props) => {
             className="btn"
             onClick={() => deleteContact(props)}
           >
-            Delete
+            <Trash3Fill size={20} />
           </button>
         </li>
       </ul>

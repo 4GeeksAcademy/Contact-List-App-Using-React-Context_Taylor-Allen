@@ -76,28 +76,16 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({ contacts: updatedContacts });
       },
 
-      deleteContacts: async (id) => {
-        const url = "https://playground.4geeks.com/apis/fake/contact/" + id;
-        const options = {
+      deleteContact: async (id) => {
+        const apiURL = "https://playground.4geeks.com/apis/fake/contact/" + id;
+
+        fetch(apiURL, {
           method: "DELETE",
-        };
+        });
 
-        try {
-          const response = await fetch(url, options);
-
-          if (!response.ok) {
-            console.error("Error:", response.status, response.statusText);
-            const errorData = await response.json();
-            console.error("Error Data:", errorData);
-            return;
-          }
-
-          const data = await response.json();
-          console.log("Deleted contact:", data);
-          getActions().getContacts();
-        } catch (error) {
-          console.error("Network error:", error);
-        }
+        setStore({
+          contacts: getStore().contacts.filter((contact) => contact.id !== id),
+        });
       },
     },
   };
