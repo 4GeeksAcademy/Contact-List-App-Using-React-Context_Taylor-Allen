@@ -13,7 +13,16 @@ const getState = ({ getStore, getActions, setStore }) => {
           initial: "white",
         },
       ],
-      contacts: [],
+      contacts: [
+        {
+          full_name: "fake name",
+          email: "fake email",
+          agenda_slug: "fake_slug",
+          address: "fake address",
+          phone: "fake phone",
+          id: 0,
+        },
+      ],
     },
     actions: {
       addContact: async (name, phone, email, address) => {
@@ -51,29 +60,50 @@ const getState = ({ getStore, getActions, setStore }) => {
         return getStore().contacts;
       },
 
-      updateContact: async (name, phone, email, address, id) => {
-        let response = await fetch(
-          "https://playground.4geeks.com/apis/fake/contact/" + id,
+      updateContact: async (contactId, attribute, value) => {
+        const store = getStore();
+        store.contactInformation.map(() => {});
+        const updatedContacts = store.contactInformation.map((contact) => {
+          if (contactid === contactId) {
+            console.log("from the action, contactId has been found");
+            return {
+              ...contact,
+              [attribute]: value,
+            };
+          }
+          return contact;
+        });
+        // );
+        // let data = await response.json();
+
+        // const currentContacts = getStore().contacts;
+        // const updatedContacts = currentContacts.map((contact) =>
+        //   contact.id === id ? data : contact
+        // );
+        console.log(
+          updatedContacts,
+          "this is updatedContacts from the action, shows what contactInformation is being fed"
+        );
+        setStore({ contactInformation: updatedContacts });
+      },
+
+      saveUpdatedContact: async (contactId, name, email, address, phone) => {
+        const response = await fetch(
+          "https://playground.4geeks.com/apis/fake/contact/${contactId}",
           {
             method: "PUT",
-            headers: { "Content-type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify({
               full_name: name,
               email: email,
-              agenda_slug: "taylor-allen",
               address: address,
               phone: phone,
+              agenda_slug: "taylor-allen",
             }),
           }
         );
-        let data = await response.json();
-
-        const currentContacts = getStore().contacts;
-        const updatedContacts = currentContacts.map((contact) =>
-          contact.id === id ? data : contact
-        );
-
-        setStore({ contacts: updatedContacts });
       },
 
       deleteContact: async (id) => {
