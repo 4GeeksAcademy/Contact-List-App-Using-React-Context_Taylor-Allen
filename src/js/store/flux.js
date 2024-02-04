@@ -13,109 +13,94 @@ const getState = ({ getStore, getActions, setStore }) => {
           initial: "white",
         },
       ],
-      contacts: [
-        {
-          full_name: "fake name",
-          email: "fake email",
-          agenda_slug: "fake_slug",
-          address: "fake address",
-          phone: "fake phone",
-          id: 0,
-        },
-      ],
+      contacts: [],
     },
     actions: {
-      addContact: async (name, phone, email, address) => {
-        let response = await fetch(
-          "https://playground.4geeks.com/apis/fake/contact/",
-          {
-            method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify({
-              full_name: name,
-              email: email,
-              agenda_slug: "taylor-allen",
-              address: address,
-              phone: phone,
-            }),
-          }
-        );
-        let data = await response.json();
+      getContacts: () => {
+        fetch(
+          "https://playground.4geeks.com/apis/fake/contact/agenda/taylor-allen"
+        )
+          .then((resp) => {
+            if (!resp.ok) throw Error(resp.statusText);
+            return resp.json();
+          })
+          .then((data) => {
+            console.log(data);
 
-        const currentContacts = getStore().contacts;
-        setStore({ contacts: [...currentContacts, data] });
+            // Set the retrieved contacts data in the store
+            setStore({ contacts: data });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       },
 
-      getContacts: async () => {
-        let response = await fetch(
-          "https://playground.4geeks.com/apis/fake/contact/agenda/taylor-allen",
-          {
-            method: "GET",
-            headers: { "Content-type": "application/json" },
-          }
-        );
-        let data = await response.json();
-        setStore({ contacts: data });
+      addContacts: (contactData) => {
+        const url = "https://playground.4geeks.com/apis/fake/contact/";
+        const request = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(contactData),
+        };
 
-        return getStore().contacts;
+        fetch(url, request)
+          .then((resp) => {
+            if (!resp.ok) throw Error(resp.statusText);
+            return resp.json();
+          })
+          .then((data) => {
+            console.log(data);
+            getActions().getContacts();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       },
 
-      updateContact: async (contactId, attribute, value) => {
-        const store = getStore();
-        store.contactInformation.map(() => {});
-        const updatedContacts = store.contactInformation.map((contact) => {
-          if (contactid === contactId) {
-            console.log("from the action, contactId has been found");
-            return {
-              ...contact,
-              [attribute]: value,
-            };
-          }
-          return contact;
-        });
-        // );
-        // let data = await response.json();
-
-        // const currentContacts = getStore().contacts;
-        // const updatedContacts = currentContacts.map((contact) =>
-        //   contact.id === id ? data : contact
-        // );
-        console.log(
-          updatedContacts,
-          "this is updatedContacts from the action, shows what contactInformation is being fed"
-        );
-        setStore({ contactInformation: updatedContacts });
-      },
-
-      saveUpdatedContact: async (contactId, name, email, address, phone) => {
-        const response = await fetch(
-          "https://playground.4geeks.com/apis/fake/contact/${contactId}",
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              full_name: name,
-              email: email,
-              address: address,
-              phone: phone,
-              agenda_slug: "taylor-allen",
-            }),
-          }
-        );
-      },
-
-      deleteContact: async (id) => {
-        const apiURL = "https://playground.4geeks.com/apis/fake/contact/" + id;
-
-        fetch(apiURL, {
+      deleteContacts: (id) => {
+        const url = `https://playground.4geeks.com/apis/fake/contact/${id}`;
+        const request = {
           method: "DELETE",
-        });
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
 
-        setStore({
-          contacts: getStore().contacts.filter((contact) => contact.id !== id),
-        });
+        fetch(url, request)
+          .then((resp) => {
+            if (!resp.ok) throw Error(resp.statusText);
+            return resp.json();
+          })
+          .then((data) => {
+            console.log(data);
+            getActions().getContacts();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      },
+
+      editContact: (id, contactData) => {
+        fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(contactData),
+        })
+          .then((resp) => {
+            if (!resp.ok) throw Error(resp.statusText);
+            return resp.json();
+          })
+          .then((data) => {
+            console.log(data);
+            getActions().getContacts();
+          })
+          .catch((error) => {
+            console.error("Error", error);
+          });
       },
     },
   };

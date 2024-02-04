@@ -1,29 +1,23 @@
 import React, { useContext, useEffect } from "react";
-import { Context } from "../store/appContext";
-import ContactCard from "../component/contactList";
-import {} from 'react-bootstrap-icons'
 import "../../styles/home.css";
+import { ContactCard } from "../component/ContactCard";
+import { Context } from "../store/appContext";
 
 export const Home = () => {
-  const { store, actions } = useContext(Context);
-
-  useEffect(() => {
-    actions.getContacts();
-  }, []);
+  const { actions, store } = useContext(Context);
 
   return (
-    <div className="container text-center">
-      <div>
-        <h1 className="header">Contact List</h1>
-        {store.contacts?.map((contact, index) => (
-          <ContactCard
-            name={contact.full_name}
-            phone={contact.phone}
-            address={contact.address}
-            email={contact.email}
-            id={contact.id}
-          />
-        ))}
+    <div className="text-center mt-4">
+      <div className="card-container">
+        <div className="row">
+          {store.contacts.map((contact, index) => (
+            <ContactCard
+              key={index}
+              contact={contact}
+              className="contact-card col-xl-4 col-sm-6 mb-3"
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

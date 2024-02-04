@@ -1,93 +1,84 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-
-import "../../styles/demo.css";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const AddContact = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const { store, actions } = useContext(Context);
-  let navigate = useNavigate();
+  const { actions, store } = useContext(Context);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const [contactData, setContactData] = useState({
+    agenda_slug: "taylor-allen",
+  });
+
+  const handleChange = (e) => {
+    setContactData({ ...contactData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    actions.addContact(name, phone, email, address);
-    navigate("/home");
+    try {
+      await actions.addContacts(contactData);
+      await actions.getContacts();
+      navigate("/");
+    } catch (error) {
+      console.error("Error adding contact", error);
+    }
   };
 
   return (
-    <div className="container">
-      <div>
-        <h1 className="text-center">Contact Form</h1>
-        <form>
-          <div className="mx-5 px-5">
-            <label htmlFor="fullName" className="form-label">
-              Full Name
-            </label>
-            <input
-              onChange={(e) => setName(e.target.value)}
-              type="name"
-              className="form-control"
-              id="fullName"
-              placeholder="Jane Doe"
-            />
-          </div>
-          <div className="mx-5 px-5">
-            <label htmlFor="address" className="form-label">
-              Address
-            </label>
-            <input
-              onChange={(e) => setAddress(e.target.value)}
-              type="text"
-              className="form-control"
-              id="address"
-              placeholder="100 North Tryon Street"
-            />
-          </div>
-          <div className="mx-5 px-5">
-            <label htmlFor="phoneNumber" className="form-label">
-              Phone Number
-            </label>
-            <input
-              onChange={(e) => setPhone(e.target.value)}
-              type="number"
-              className="form-control"
-              id="phoneNumber"
-              placeholder="202-555-5555"
-            />
-          </div>
-          <div className="mx-5 px-5">
-            <label htmlFor="exampleInputPassword1" className="form-label">
-              Email
-            </label>
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              className="form-control"
-              id="exampleInputEmail1"
-            />
-          </div>
-        </form>
-      </div>
-      <div className="container-button d-flex justify-content-around">
-        <div>
-          <Link to="/">
-            <button className="btn btn-outline-secondary">Back home</button>
-          </Link>
+    <div className="contact-card-container mt-0">
+      <form onSubmit={handleSubmit} className="contact-form">
+        <div className="form-group">
+          <label>Full Name</label>
+          <input
+            type="text"
+            name="full_name"
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            required
+          />
         </div>
-        <div>
-          <button
-            type="submit"
-            className="btn btn-success"
-            onClick={(e) => handleSubmit(e)}
-          >
-            Submit
-          </button>
+        <div className="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            required
+          />
         </div>
-      </div>
+        <div className="form-group">
+          <label>Address</label>
+          <input
+            type="text"
+            name="address"
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Phone</label>
+          <input
+            type="tel"
+            name="phone"
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            required
+          />
+        </div>
+
+        {/* if contact.id doesn't exist, Add Contact button and vice versa*/}
+        <button type="submit">
+          {contactData.id ? "Update Contact" : "Add Contact"}
+        </button>
+      </form>
     </div>
   );
 };
