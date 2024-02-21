@@ -209,3 +209,8 @@ button {
   font-size: 16px;
   transition: background-color 0.3s ease;
 }
+
+footer {
+  position: fixed;
+  bottom: 0;
+}
